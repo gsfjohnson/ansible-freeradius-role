@@ -1,0 +1,6 @@
+---
+# freeradius ansible role defaults
+
+fr_pkgs:
+ - freeradius
+

@@ -4,3 +4,6 @@
 fr_pkgs:
  - freeradius
 
+fr_svc_state: started
+fr_svc_enabled: yes
+

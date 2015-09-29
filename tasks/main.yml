@@ -2,3 +2,6 @@
 - include: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
+- name: service enable, start
+  service: name=radiusd state={{fr_svc_state}} enabled={{fr_svc_enabled}}
+

@@ -2,6 +2,33 @@
 - include: setup-RedHat.yml
   when: ansible_os_family == 'RedHat'
 
+- name: dictionary templates
+  copy:
+    src: "{{ item.name }}"
+    dest: "/usr/share/freeradius/{{ item.name }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_items: fr_conf_dicts
+  notify: svc restart fr 
+
+- name: include dictionaries
+  lineinfile: >
+    dest="/usr/share/freeradius/dictionary"
+    insertafter="dictionary.zyxel"
+    line="$INCLUDE {{item.name}}"
+    state=present
+  with_items: fr_conf_dicts
+  notify: svc restart fr
+
+- name: configure hunts 
+  lineinfile: >
+    dest="/etc/raddb/huntgroups"
+    line="{{item.hunt}} {{item.logic}}"
+    state=present
+  with_items: fr_conf_hunts
+  notify: svc restart fr 
+
 - name: service enable, start
   service: name=radiusd state={{fr_svc_state}} enabled={{fr_svc_enabled}}
 

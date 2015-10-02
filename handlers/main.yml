@@ -1,0 +1,4 @@
+---
+
+- name: svc restart fr
+  service: name=radiusd state=restarted

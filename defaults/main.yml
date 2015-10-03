@@ -4,6 +4,12 @@
 fr_pkgs:
  - freeradius
 
+fr_absent_files: []
+fr_gist_files: []
+fr_gist_scripts: []
+
+fr_group: radiusd
+
 fr_svc_state: started
 fr_svc_enabled: yes
 

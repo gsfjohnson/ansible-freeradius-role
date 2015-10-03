@@ -29,6 +29,32 @@
   with_items: fr_conf_hunts
   notify: svc restart fr 
 
+- name: gist files
+  get_url:
+    url: "https://gist.githubusercontent.com/{{item.gist}}/raw"
+    dest: "/etc/raddb/{{ item.dest }}"
+    force: yes
+    owner: root
+    group: "{{fr_group}}"
+    mode: 0644
+  with_items: fr_gist_files
+  notify: svc restart fr
+
+- name: delete files
+  file: path=/etc/raddb/{{item}} state=absent
+  with_items: fr_absent_files
+
+- name: gist scripts
+  get_url:
+    url: "https://gist.githubusercontent.com/{{item.gist}}/raw"
+    dest: "/etc/raddb/{{ item.dest }}"
+    force: yes
+    owner: root
+    group: "{{fr_group}}"
+    mode: 0755
+  with_items: fr_gist_scripts
+  notify: svc restart fr
+
 - name: service enable, start
   service: name=radiusd state={{fr_svc_state}} enabled={{fr_svc_enabled}}
 

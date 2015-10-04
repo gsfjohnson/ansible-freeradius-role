@@ -4,6 +4,9 @@
 fr_pkgs:
  - freeradius
 
+fr_conf_ldap: []
+# - { name: ad, binddn: "CN=Admin,O=Cogs,DN=example,DN=org", bindpw: secret, basedn: "O=Cogs,DN=example,DN=org" }
+
 fr_absent_files: []
 fr_gist_files: []
 fr_gist_scripts: []

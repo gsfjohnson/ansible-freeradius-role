@@ -1,0 +1,20 @@
+ldap {{item.name}} {
+  server = "{{item.server}}"
+  identity = "{{item.binddn}}"
+  password = "{{item.bindpw}}"
+  basedn = "{{item.basedn}}"
+  filter = "{{item.filter}}"
+
+  ldap_connections_number = 5
+  timeout = 4
+  timelimit = 3
+  net_timeout = 1
+
+  tls {
+    start_tls = no
+  }
+
+  dictionary_mapping = ${confdir}/ldap.attrmap
+  edir_account_policy_check = no
+}
+

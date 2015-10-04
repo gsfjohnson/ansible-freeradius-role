@@ -29,6 +29,14 @@
   with_items: fr_conf_hunts
   notify: svc restart fr 
 
+- name: config ldap modules
+  template: src=ldap-module.j2
+            dest=/etc/raddb/modules/{{item.name}}
+            owner=root
+            group={{fr_group}}
+            mode=0644
+  with_items: fr_conf_ldap
+
 - name: gist files
   get_url:
     url: "https://gist.githubusercontent.com/{{item.gist}}/raw"

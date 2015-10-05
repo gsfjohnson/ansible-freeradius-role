@@ -29,6 +29,14 @@
   with_items: fr_conf_hunts
   notify: svc restart fr 
 
+- name: config sql modules
+  template: src=sql-module.j2
+            dest=/etc/raddb/modules/{{item.name}}
+            owner=root
+            group={{fr_group}}
+            mode=0644
+  with_items: fr_conf_sql
+
 - name: config ldap modules
   template: src=ldap-module.j2
             dest=/etc/raddb/modules/{{item.name}}
@@ -36,6 +44,14 @@
             group={{fr_group}}
             mode=0644
   with_items: fr_conf_ldap
+
+- name: config perl modules
+  template: src=perl-module.j2
+            dest=/etc/raddb/modules/{{item.name}}
+            owner=root
+            group={{fr_group}}
+            mode=0644
+  with_items: fr_conf_perl
 
 - name: gist files
   get_url:

@@ -7,6 +7,13 @@ fr_pkgs:
 fr_conf_ldap: []
 # - { name: ad, binddn: "CN=Admin,O=Cogs,DN=example,DN=org", bindpw: secret, basedn: "O=Cogs,DN=example,DN=org" }
 
+fr_conf_sql: []
+#  - { name: sql, server: localhost, readclients: yes, include: sql.conf }
+
+fr_conf_perl: []
+#  - name: perl-awesome
+#    module: awesome.pl
+
 fr_absent_files: []
 fr_gist_files: []
 fr_gist_scripts: []

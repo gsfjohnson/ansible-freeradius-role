@@ -1,0 +1,15 @@
+# -*- text -*-
+#
+#  $Id$
+
+#  Persistent, embedded Perl interpreter.
+#
+perl {{item.name}} {
+  #
+  #  The Perl script to execute on authorize, authenticate,
+  #  accounting, xlat, etc.  This is very similar to using
+  #  'rlm_exec' module, but it is persistent, and therefore
+  #  faster.
+  #
+  module = ${confdir}/{{item.module}}
+}

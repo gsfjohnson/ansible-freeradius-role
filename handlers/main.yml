@@ -2,3 +2,4 @@
 
 - name: svc restart fr
   service: name=radiusd state=restarted
+  when: fr_svc_state == "started"

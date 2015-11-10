@@ -45,6 +45,18 @@
 #		Group = staff
 
 {% for hg in fr_huntgroups %}
-{{hg.name}} {{hg.params}}
+{% if hg.comment is defined %}
+#
+# {{hg.comment}}
+{% if hg.comment1 is defined %}
+# {{hg.comment1}}
+{% endif %}
+#
+{% endif %}
+{% if hg.headcomment is defined %}
+
+# {{hg.headcomment}}
+{% endif %}
+{{"%-16s %s"|format(hg.hunt,hg.logic)}}
 {% endfor %}
 

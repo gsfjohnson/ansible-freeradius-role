@@ -46,6 +46,7 @@
 
 {% for hg in fr_huntgroups %}
 {% if hg.comment is defined %}
+
 #
 # {{hg.comment}}
 {% if hg.comment1 is defined %}
@@ -56,6 +57,9 @@
 {% if hg.headcomment is defined %}
 
 # {{hg.headcomment}}
+{% endif %}
+{% if hg.newline is defined and hg.newline %}
+
 {% endif %}
 {{"%-16s %s"|format(hg.hunt,hg.logic)}}
 {% endfor %}

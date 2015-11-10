@@ -1,23 +1,39 @@
 ---
 
-- name: dictionary templates
+- name: copy files
   copy:
-    src: "{{ item.name }}"
-    dest: "/usr/share/freeradius/{{ item.name }}"
-    owner: root
-    group: root
-    mode: 0644
-  with_items: fr_conf_dicts
+    src="{{item.src}}"
+    dest="{{item.dest}}"
+    owner={{item.owner|default('root')}}
+    group={{item.group|default('root')}}
+    mode={{item.mode|default('0644')}}
+  with_items: fr_copy_files
   notify: svc restart fr 
 
 - name: include dictionaries
   lineinfile: >
     dest="/usr/share/freeradius/dictionary"
-    insertafter="dictionary.zyxel"
+    insertafter="{{item.after}}"
     line="$INCLUDE {{item.name}}"
     state=present
   with_items: fr_conf_dicts
   notify: svc restart fr
+
+- name: template proxy.conf
+  template:
+    src=proxy.conf.j2
+    dest=/etc/raddb/proxy.conf
+    owner=root
+    group={{fr_group}}
+    mode=0644
+
+- name: template clients.conf
+  template:
+    src=clients.conf.j2
+    dest=/etc/raddb/clients.conf
+    owner=root
+    group={{fr_group}}
+    mode=0644
 
 - name: config sql modules
   template:

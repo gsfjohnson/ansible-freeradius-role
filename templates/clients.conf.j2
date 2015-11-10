@@ -1,0 +1,28 @@
+# -*- text -*-
+##
+## clients.conf -- client configuration directives
+##
+##	$Id$
+
+#######################################################################
+#
+#  Define RADIUS clients (usually a NAS, Access Point, etc.).
+
+#
+# !!! Use database to define clients !!!
+#
+{% for c in fr_conf_clients %}
+
+{% if c.comment is defined %}
+# {{c.comment}}
+{% endif %}
+client {{c.host}} {
+  secret = {{c.secret}}
+{% if c.shortname is defined %}
+  shortname = {{c.shortname}}
+{% endif %}
+{% if c.nastype is defined %}
+  nastype = {{c.nastype}}
+{% endif %}
+}
+{% endfor %}

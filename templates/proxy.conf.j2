@@ -1,0 +1,42 @@
+# -*- text -*-
+##
+## proxy.conf -- proxy radius and realm configuration directives
+##
+##	$Id$
+
+#######################################################################
+#
+#  Proxy server configuration
+#
+#  This entry controls the servers behaviour towards ALL other servers
+#  to which it sends proxy requests.
+#
+proxy server {
+  default_fallback = no
+}
+
+#home_server localhost {
+#  type = auth
+#  ipaddr = 127.0.0.1
+#  secret = testing123
+#}
+
+realm NULL {
+}
+
+realm LOCAL {
+}
+{% for r in fr_conf_proxy %}
+
+realm {{r.realm}} {
+  type = {{r.type}}
+  authhost = {{r.authhost}}
+  accthost = {{r.accthost}}
+{% if r.secret is defined %}
+  secret = {{r.secret}}
+{% endif %}
+{% if r.nostrip is defined and r.nostrip %}
+  nostrip
+{% endif %}
+}
+{% endfor %}

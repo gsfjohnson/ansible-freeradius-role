@@ -19,36 +19,31 @@
   with_items: fr_conf_dicts
   notify: svc restart fr
 
-- name: configure hunts 
-  lineinfile: >
-    dest="/etc/raddb/huntgroups"
-    line="{{item.hunt}} {{item.logic}}"
-    state=present
-  with_items: fr_conf_hunts
-  notify: svc restart fr 
-
 - name: config sql modules
-  template: src=sql-module.j2
-            dest=/etc/raddb/modules/{{item.name}}
-            owner=root
-            group={{fr_group}}
-            mode=0644
+  template:
+    src=sql-module.j2
+    dest=/etc/raddb/modules/{{item.name}}
+    owner=root
+    group={{fr_group}}
+    mode=0644
   with_items: fr_conf_sql
 
 - name: config ldap modules
-  template: src=ldap-module.j2
-            dest=/etc/raddb/modules/{{item.name}}
-            owner=root
-            group={{fr_group}}
-            mode=0644
+  template:
+    src=ldap-module.j2
+    dest=/etc/raddb/modules/{{item.name}}
+    owner=root
+    group={{fr_group}}
+    mode=0644
   with_items: fr_conf_ldap
 
 - name: config perl modules
-  template: src=perl-module.j2
-            dest=/etc/raddb/modules/{{item.name}}
-            owner=root
-            group={{fr_group}}
-            mode=0644
+  template:
+    src=perl-module.j2
+    dest=/etc/raddb/modules/{{item.name}}
+    owner=root
+    group={{fr_group}}
+    mode=0644
   with_items: fr_conf_perl
 
 - name: config huntgroups
@@ -58,6 +53,7 @@
      owner=root
      group={{fr_group}}
      mode=0644
+  notify: svc restart fr
 
 - name: gist files
   get_url:

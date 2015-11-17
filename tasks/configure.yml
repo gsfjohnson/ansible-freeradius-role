@@ -4,9 +4,9 @@
   copy:
     src="{{item.src}}"
     dest="{{item.dest}}"
-    owner={{item.owner|default('root')}}
-    group={{item.group|default('root')}}
-    mode={{item.mode|default('0644')}}
+    owner={{item.owner|default(fr_owner)}}
+    group={{item.group|default(fr_group)}}
+    mode={{item.mode|default(fr_mode)}}
   with_items: fr_copy_files
   notify: svc restart fr 
 
@@ -23,52 +23,54 @@
   template:
     src=proxy.conf.j2
     dest=/etc/raddb/proxy.conf
-    owner=root
+    owner={{fr_owner}}
     group={{fr_group}}
-    mode=0644
+    mode={{fr_mode}}
+  when: fr_conf_proxy is defined
 
 - name: template clients.conf
   template:
     src=clients.conf.j2
     dest=/etc/raddb/clients.conf
-    owner=root
+    owner={{fr_owner}}
     group={{fr_group}}
-    mode=0644
+    mode={{fr_mode}}
+  when: fr_conf_clients is defined
 
 - name: config sql modules
   template:
     src=sql-module.j2
     dest=/etc/raddb/modules/{{item.name}}
-    owner=root
+    owner={{fr_owner}}
     group={{fr_group}}
-    mode=0644
+    mode={{fr_mode}}
   with_items: fr_conf_sql
 
 - name: config ldap modules
   template:
     src=ldap-module.j2
     dest=/etc/raddb/modules/{{item.name}}
-    owner=root
+    owner={{fr_owner}}
     group={{fr_group}}
-    mode=0644
+    mode={{fr_mode}}
   with_items: fr_conf_ldap
 
 - name: config perl modules
   template:
     src=perl-module.j2
     dest=/etc/raddb/modules/{{item.name}}
-    owner=root
+    owner={{fr_owner}}
     group={{fr_group}}
-    mode=0644
+    mode={{fr_mode}}
   with_items: fr_conf_perl
 
 - name: config huntgroups
   template:
      src=huntgroups.j2
      dest=/etc/raddb/huntgroups
-     owner=root
+     owner={{fr_owner}}
      group={{fr_group}}
-     mode=0644
+     mode={{fr_mode}}
   notify: svc restart fr
 
 - name: gist files
@@ -76,14 +78,16 @@
     url: "https://gist.githubusercontent.com/{{item.gist}}/raw"
     dest: "/etc/raddb/{{ item.dest }}"
     force: yes
-    owner: root
+    owner: "{{fr_owner}}"
     group: "{{fr_group}}"
-    mode: 0644
+    mode: "{{fr_mode}}"
   with_items: fr_gist_files
   notify: svc restart fr
 
 - name: delete files
-  file: path=/etc/raddb/{{item}} state=absent
+  file:
+    path=/etc/raddb/{{item}}
+    state=absent
   with_items: fr_absent_files
 
 - name: gist scripts
@@ -91,12 +95,15 @@
     url: "https://gist.githubusercontent.com/{{item.gist}}/raw"
     dest: "/etc/raddb/{{ item.dest }}"
     force: yes
-    owner: root
+    owner: "{{fr_owner}}"
     group: "{{fr_group}}"
     mode: 0755
   with_items: fr_gist_scripts
   notify: svc restart fr
 
 - name: service enable, start
-  service: name=radiusd state={{fr_svc_state}} enabled={{fr_svc_enabled}}
+  service:
+    name={{fr_svc_name}}
+    state={{fr_svc_state}}
+    enabled={{fr_svc_enabled}}
 

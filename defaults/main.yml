@@ -18,8 +18,11 @@ fr_absent_files: []
 fr_gist_files: []
 fr_gist_scripts: []
 
+fr_owner: root
 fr_group: radiusd
+fr_mode: '0640'
 
+fr_svc_name: radiusd
 fr_svc_state: started
 fr_svc_enabled: yes
 

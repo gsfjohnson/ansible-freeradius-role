@@ -1,6 +1,8 @@
 ---
 
 - name: install FR
-  yum: pkg="{{item}}" state=installed
+  yum:
+    pkg={{item}}
+    state=installed
   with_items: fr_pkgs
 

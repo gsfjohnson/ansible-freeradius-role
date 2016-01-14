@@ -1,7 +1,9 @@
 ldap {{item.name}} {
   server = "{{item.server}}"
+{% if item.binddn is defined and item.bindpw is defined %}
   identity = "{{item.binddn}}"
   password = "{{item.bindpw}}"
+{% endif %}
   basedn = "{{item.basedn}}"
   filter = "{{item.filter}}"
 

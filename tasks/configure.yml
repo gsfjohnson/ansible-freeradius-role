@@ -107,4 +107,5 @@
     name={{fr_svc_name}}
     state={{fr_svc_state}}
     enabled={{fr_svc_enabled}}
+    runlevel={{fr_svc_runlevel}}
 

@@ -25,6 +25,7 @@ fr_mode: '0640'
 fr_svc_name: radiusd
 fr_svc_state: started
 fr_svc_enabled: yes
+fr_svc_runlevel: default
 
 fr_huntgroups: []
 #  - name: business

@@ -33,3 +33,6 @@ fr_huntgroups: []
 
 fr_copy_files: []
 fr_link_files: []
+
+fr_sites_enabled: []
+fr_sites_disabled: []

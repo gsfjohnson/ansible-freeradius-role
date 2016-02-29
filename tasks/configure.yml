@@ -18,6 +18,21 @@
   with_items: fr_link_files
   notify: svc restart fr
 
+- name: enable sites
+  file:
+    src="/etc/raddb/sites-available/{{item}}"
+    dest="/etc/raddb/sites-enabled/{{item}}"
+    state=link
+  with_items: fr_sites_enabled
+  notify: svc restart fr
+
+- name: disable sites
+  file:
+    path="/etc/raddb/sites-enabled/{{item}}"
+    state=absent
+  with_items: fr_sites_disabled
+  notify: svc restart fr
+
 - name: include dictionaries
   lineinfile: >
     dest="/usr/share/freeradius/dictionary"

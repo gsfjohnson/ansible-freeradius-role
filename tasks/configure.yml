@@ -10,6 +10,14 @@
   with_items: fr_copy_files
   notify: svc restart fr 
 
+- name: link files
+  file:
+    src="{{item.src}}"
+    dest="{{item.dest}}"
+    state=link
+  with_items: fr_link_files
+  notify: svc restart fr
+
 - name: include dictionaries
   lineinfile: >
     dest="/usr/share/freeradius/dictionary"

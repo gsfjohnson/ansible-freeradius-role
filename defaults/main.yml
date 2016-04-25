@@ -27,6 +27,17 @@ fr_svc_state: started
 fr_svc_enabled: yes
 fr_svc_runlevel: default
 
+fr_certs: []
+#  - filename: server.crt
+#    cn: server.example.com
+#    file: somefile.pem
+#  - filename: server.key
+#    cn: server.example.com
+#    content: |
+#      -----BEGIN RSA PRIVATE KEY-----
+#      blah blah
+#      -----END RSA PRIVATE KEY-----
+
 fr_huntgroups: []
 #  - name: business
 #    params: "NAS-IP-Address == 192.168.2.5, NAS-Port-Id == 0-7"

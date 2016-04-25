@@ -4,5 +4,5 @@
   yum:
     pkg={{item}}
     state=installed
-  with_items: fr_pkgs
+  with_items: "{{fr_pkgs}}"
 

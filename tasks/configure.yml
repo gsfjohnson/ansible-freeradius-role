@@ -7,7 +7,7 @@
     owner={{item.owner|default(fr_owner)}}
     group={{item.group|default(fr_group)}}
     mode={{item.mode|default(fr_mode)}}
-  with_items: fr_copy_files
+  with_items: "{{fr_copy_files}}"
   notify: svc restart fr 
 
 - name: link files
@@ -15,7 +15,7 @@
     src="{{item.src}}"
     dest="{{item.dest}}"
     state=link
-  with_items: fr_link_files
+  with_items: "{{fr_link_files}}"
   notify: svc restart fr
 
 - name: enable sites
@@ -23,14 +23,14 @@
     src="/etc/raddb/sites-available/{{item}}"
     dest="/etc/raddb/sites-enabled/{{item}}"
     state=link
-  with_items: fr_sites_enabled
+  with_items: "{{fr_sites_enabled}}"
   notify: svc restart fr
 
 - name: disable sites
   file:
     path="/etc/raddb/sites-enabled/{{item}}"
     state=absent
-  with_items: fr_sites_disabled
+  with_items: "{{fr_sites_disabled}}"
   notify: svc restart fr
 
 - name: include dictionaries
@@ -39,7 +39,7 @@
     insertafter="{{item.after}}"
     line="$INCLUDE {{item.name}}"
     state=present
-  with_items: fr_conf_dicts
+  with_items: "{{fr_conf_dicts}}"
   notify: svc restart fr
 
 - name: template proxy.conf
@@ -67,7 +67,7 @@
     owner={{fr_owner}}
     group={{fr_group}}
     mode={{fr_mode}}
-  with_items: fr_conf_sql
+  with_items: "{{fr_conf_sql}}"
 
 - name: config ldap modules
   template:
@@ -76,7 +76,7 @@
     owner={{fr_owner}}
     group={{fr_group}}
     mode={{fr_mode}}
-  with_items: fr_conf_ldap
+  with_items: "{{fr_conf_ldap}}"
 
 - name: config perl modules
   template:
@@ -85,7 +85,7 @@
     owner={{fr_owner}}
     group={{fr_group}}
     mode={{fr_mode}}
-  with_items: fr_conf_perl
+  with_items: "{{fr_conf_perl}}"
 
 - name: config huntgroups
   template:
@@ -97,6 +97,28 @@
   notify: svc restart fr
   when: fr_huntgroups|length > 0
 
+- name: install certificate content
+  copy:
+    content: "{{item.content}}"
+    dest: "/etc/raddb/certs/{{item.filename}}"
+    owner: "{{fr_owner}}"
+    group: "{{fr_group}}"
+    mode: 0640
+  with_items: "{{fr_certs}}"
+  when: item.content is defined and item.cn is defined and (item.cn == '*' or item.cn == ansible_fqdn)
+  notify: svc restart fr
+
+- name: install certificate file
+  copy:
+    src: "{{item.file}}"
+    dest: "/etc/raddb/certs/{{item.filename}}"
+    owner: "{{fr_owner}}"
+    group: "{{fr_group}}"
+    mode: 0640
+  with_items: "{{fr_certs}}"
+  when: item.file is defined and item.cn is defined and (item.cn == '*' or item.cn == ansible_fqdn)
+  notify: svc restart fr
+
 - name: gist files
   get_url:
     url: "https://gist.githubusercontent.com/{{item.gist}}/raw"
@@ -105,14 +127,14 @@
     owner: "{{fr_owner}}"
     group: "{{fr_group}}"
     mode: "{{fr_mode}}"
-  with_items: fr_gist_files
+  with_items: "{{fr_gist_files}}"
   notify: svc restart fr
 
 - name: delete files
   file:
     path=/etc/raddb/{{item}}
     state=absent
-  with_items: fr_absent_files
+  with_items: "{{fr_absent_files}}"
 
 - name: gist scripts
   get_url:
@@ -122,7 +144,7 @@
     owner: "{{fr_owner}}"
     group: "{{fr_group}}"
     mode: 0755
-  with_items: fr_gist_scripts
+  with_items: "{{fr_gist_scripts}}"
   notify: svc restart fr
 
 - name: service enable, start
